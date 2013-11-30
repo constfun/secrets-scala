@@ -1,12 +1,15 @@
-import org.keyczar._
+import org.keyczar.{Crypter}
 import scala.io.{BufferedSource, Source}
+import scala.pickling._
+import json._
 
 object App {
   case class Entry(title:String, password:String)
   type Db = List[Entry]
 
-  def main(args:Array[String]) = args match {
-    case Array("import", filePath) => importFromSource(Source.fromFile(filePath))
+  def encrypt(db:Db) = {
+    val crypter = new Crypter("~/.keyczar")
+    val cyphertext = crypter.encrypt("string")
   }
 
   def importFromSource(source:BufferedSource) = {
@@ -15,6 +18,12 @@ object App {
       case entryMatch(title, password) => Entry(title, password)
     }.toList
 
-    db.foreach(e => println(e.title))
+    encrypt(db)
+  }
+
+  def main(args:Array[String]) = args match {
+    case Array("import") => importFromSource(Source.stdin)
+    case Array("import", filePath) => importFromSource(Source.fromFile(filePath))
+    case _ =>
   }
 }
