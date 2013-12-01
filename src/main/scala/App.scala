@@ -1,9 +1,10 @@
 import org.keyczar.Crypter
 import scala.io.{BufferedSource, Source}
 import spray.json._
-import DefaultJsonProtocol._
-import scala.reflect.io.{Path, File}
 import org.apache.log4j
+import java.nio.charset.{StandardCharsets}
+import java.nio.file.{StandardOpenOption, Paths, Files}
+import scala.collection.JavaConverters._
 
 object App {
   log4j.Logger.getRootLogger.setLevel(log4j.Level.OFF)
@@ -16,13 +17,13 @@ object App {
   }
   import EntryJsonProtocol._
 
-  val fp = "/Users/nick/my.secrets"
-  val crypter = new Crypter("/Users/nick/.keyczar")
+  val fp = "/Volumes/Snappy/my.secrets"
+  val crypter = new Crypter("/Volumes/Snappy/.keyczar")
 
   def encrypt(text:String) = crypter.encrypt(text)
   def decrypt(cyphertext:String) = crypter.decrypt(cyphertext)
-  def read = File(fp).slurp
-  def write(cyphertext:String) = Path(fp).toFile.writeAll(cyphertext)
+  def read:String = Files.readAllLines(Paths.get(fp), StandardCharsets.UTF_8).asScala.mkString
+  def write(cyphertext:String) = Files.write(Paths.get(fp), cyphertext.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE)
   def serialize(db:Db) = db.toJson.toString
   def deserialize(json:String) = json.asJson.convertTo[Db]
   def save(db:Db) = write(encrypt(serialize(db)))
@@ -43,7 +44,7 @@ object App {
     save(db)
   }
 
-  def main(args:Array[String]) = args match {
+  def main(args:Array[String]):Unit = args match {
     case Array("list") => list
     case Array("import") => importFromSource(Source.stdin)
     case Array("import", filePath) => importFromSource(Source.fromFile(filePath))

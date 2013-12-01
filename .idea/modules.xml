@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/secrets-scala.iml" filepath="$PROJECT_DIR$/secrets-scala.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea_modules/secrets.iml" filepath="$PROJECT_DIR$/.idea_modules/secrets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea_modules/secrets-build.iml" filepath="$PROJECT_DIR$/.idea_modules/secrets-build.iml" />
     </modules>
   </component>
 </project>

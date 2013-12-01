@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="parboiled-core-1.1.5">
+  <library name="jss4.jar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/parboiled-core-1.1.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jss4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
