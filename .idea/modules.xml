@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/passwords.iml" filepath="$PROJECT_DIR$/passwords.iml" />
+      <module fileurl="file://$PROJECT_DIR$/secrets-scala.iml" filepath="$PROJECT_DIR$/secrets-scala.iml" />
     </modules>
   </component>
 </project>

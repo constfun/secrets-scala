@@ -2,6 +2,10 @@
   <library name="gson-2.2.4">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/gson-2.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jss4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/keyczar-0.71g-090613.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/scala-pickling_2.10-0.8.0-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
