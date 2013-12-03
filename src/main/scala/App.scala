@@ -51,7 +51,7 @@ object App {
   }
 
   def pbcopy(s:String) = {
-    println(s)
+    (s"echo $s" #| "pbcopy").!
   }
 
   def presentChoices(choices:List[EntryAndPassword]) {
@@ -68,10 +68,10 @@ object App {
         case WithPassword(password) => EntryAndPassword(entry, password)
       }
     }
-    matches.map(println)
-    matches.length match {
-      case 1 => pbcopy(matches(0).password)
-      case _ => presentChoices(matches)
+    matches match {
+      case Nil => println("Nothing found")
+      case m :: Nil => pbcopy(m.password)
+      case m :: tail => presentChoices(matches)
     }
   }
 
