@@ -11,3 +11,5 @@ libraryDependencies ++= Seq(
   "log4j" % "log4j" % "1.2.17",
   "io.spray" %%  "spray-json" % "1.2.5"
 )
+
+seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
