@@ -5,12 +5,18 @@ import org.apache.log4j
 import java.nio.charset.{StandardCharsets}
 import java.nio.file.{StandardOpenOption, Paths, Files}
 import scala.collection.JavaConverters._
+import scala.sys.process._
 
 object App {
   log4j.Logger.getRootLogger.setLevel(log4j.Level.OFF)
 
   type Db = List[Entry]
   case class Entry(title:String, payload:List[(String, String)])
+  case class EntryAndPassword(entry:Entry, password:String)
+
+  object WithPassword {
+    def unapply(entry:Entry):Option[String] = entry.payload.collectFirst { case ("password", password) => password }
+  }
 
   object EntryJsonProtocol extends DefaultJsonProtocol {
     implicit val entryFormat = jsonFormat2(Entry)
@@ -44,10 +50,36 @@ object App {
     save(db)
   }
 
-  def main(args:Array[String]):Unit = args match {
-    case Array("list") => list
-    case Array("import") => importFromSource(Source.stdin)
-    case Array("import", filePath) => importFromSource(Source.fromFile(filePath))
+  def pbcopy(s:String) = {
+    println(s)
+  }
+
+  def presentChoices(choices:List[EntryAndPassword]) {
+    for( i <- 0 until choices.length) println(s"${i+1}: ${choices(i).entry.title}")
+    print("Which one? ")
+    pbcopy(choices(readInt() - 1).password)
+  }
+
+  def passfor(terms:List[String]) = {
+    val db = load
+    val naiveSearch = terms.mkString(".*?").r
+    val matches = db.collect {
+      case entry:Entry if naiveSearch.findFirstIn(entry.title).nonEmpty => entry match {
+        case WithPassword(password) => EntryAndPassword(entry, password)
+      }
+    }
+    matches.map(println)
+    matches.length match {
+      case 1 => pbcopy(matches(0).password)
+      case _ => presentChoices(matches)
+    }
+  }
+
+  def main(args:Array[String]):Unit = args.toList match {
+    case "list" :: Nil => list
+    case "passfor" :: terms => passfor(terms)
+    case "import" :: Nil => importFromSource(Source.stdin)
+    case "import" :: filePath :: Nil => importFromSource(Source.fromFile(filePath))
     case _ =>
   }
 }
