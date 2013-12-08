@@ -6,6 +6,7 @@ import java.nio.charset.{StandardCharsets}
 import java.nio.file.{StandardOpenOption, Paths, Files}
 import scala.collection.JavaConverters._
 import scala.sys.process._
+import org.apache.commons.lang3.RandomStringUtils
 
 object App {
   log4j.Logger.getRootLogger.setLevel(log4j.Level.OFF)
@@ -75,11 +76,21 @@ object App {
     }
   }
 
+  def randpass(title:String, len:Int = 20) = {
+    val db = load
+    val pass = RandomStringUtils.randomAscii(len)
+    val entry = Entry(title=title, payload=List(("password", pass)))
+    save(entry :: db)
+    pbcopy(pass)
+  }
+
   def main(args:Array[String]):Unit = args.toList match {
     case "list" :: Nil => list
+    case "randpass" :: title :: Nil => randpass(title)
+    case "randpass" :: title :: len :: Nil => randpass(title, len.toInt)
     case "passfor" :: terms => passfor(terms)
     case "import" :: Nil => importFromSource(Source.stdin)
     case "import" :: filePath :: Nil => importFromSource(Source.fromFile(filePath))
-    case _ =>
+    case _ => println("Not a valid command.")
   }
 }

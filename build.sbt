@@ -9,6 +9,7 @@ resolvers += "spray" at "http://repo.spray.io/"
 libraryDependencies ++= Seq(
   "com.google.code.gson" % "gson" % "2.2.4",
   "log4j" % "log4j" % "1.2.17",
+  "org.apache.commons" % "commons-lang3" % "3.1",
   "io.spray" %%  "spray-json" % "1.2.5"
 )
 
